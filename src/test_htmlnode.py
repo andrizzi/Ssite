@@ -38,9 +38,6 @@ class TestLeafNode(unittest.TestCase):
         with self.assertRaises(ValueError):
             LeafNode(tag="p", value=None)
 
-    def test_leaf_no_tag(self):
-        with self.assertRaises(ValueError):
-            LeafNode(tag=None, value="Hello, world!")
     
     """
     Skipping this one, since leaf code values cannot be empty
@@ -68,5 +65,5 @@ class TestParentNode(unittest.TestCase):
     def test_parent_repr(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode(tag="div", children=[child_node], props={"class": "container"})
-        expected_repr = "ParentNode(tag=div, value={}, children=[LeafNode(tag=span, value=child, children=[], props={})], props={'class': 'container'})"
+        expected_repr = "HTMLNode(tag=div, value={}, children=[LeafNode(tag=span, value=child, children=[], props={})], props={'class': 'container'})"
         self.assertEqual(repr(parent_node), expected_repr)

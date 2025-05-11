@@ -53,7 +53,7 @@ class LeafNode(HTMLNode):
         """
         if not value:
             raise ValueError("Value is required for LeafNode.")
-        if not tag:
+        if not tag and tag is not None:
             raise ValueError("Tag is required for LeafNode.")
         super().__init__(tag=tag, value=value, children=[], props=props)
         # Ensure that LeafNode does not have children
