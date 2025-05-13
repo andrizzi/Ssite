@@ -1,6 +1,15 @@
 import re
 from htmlnode import *
 from textnode import TextNode, TextType, split_nodes_delimiter
+from enum import Enum
+
+class BlockType(Enum):
+    PARAGRAPH = 1
+    HEADING = 2
+    CODE = 3
+    QUOTE = 4
+    UNORDERED_LIST = 5
+    ORDERED_LIST = 6
 
 def extract_markdown_images(text):
     return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
@@ -92,6 +101,26 @@ def markdown_to_blocks(markdown):
     blocks = []
     for line in lines:
         # Convert each line to TextNode objects
-        nodes = text_to_textnodes(line)
-        blocks.extend(nodes)
+        #nodes = text_to_textnodes(line)
+        blocks.append(line.strip("\n"))
     return blocks
+
+def block_to_block_type(block):
+    """
+    Convert a block of text to its corresponding block type.
+
+    :param block: The input block of text.
+    :return: The block type as a BlockType enum value.
+    """
+    if block.startswith("#"):
+        return BlockType.HEADING
+    elif block.startswith("```"):
+        return BlockType.CODE
+    elif block.startswith(">"):
+        return BlockType.QUOTE
+    elif block.startswith("-"):# or block.startswith("*"):
+        return BlockType.UNORDERED_LIST
+    elif block.startswith("1."):#re.match(r"^\d+\.", block):
+        return BlockType.ORDERED_LIST
+    else:
+        return BlockType.PARAGRAPH

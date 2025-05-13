@@ -69,3 +69,86 @@ class TestALLsplit(unittest.TestCase):
                 TextNode("link", TextType.LINKS, "https://boot.dev"),
             ],
         )
+
+class TestMarkToBlock(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_empty(self):
+        md = ""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, [""])
+
+    def test_markdown_to_blocks_no_newline(self):
+        md = "This is a single line of text"
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(blocks, ["This is a single line of text"])
+
+class TestBlockToBlockType(unittest.TestCase):
+    def test_block_to_block_type(self):
+        block = "This is a single line of text"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)
+
+    def test_block_to_block_type_empty(self):
+        block = ""
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)
+
+    def test_block_to_block_type_list(self):
+        block = "- This is a list item"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.UNORDERED_LIST)
+
+    def test_block_to_block_type_all(self):
+        md = """
+### This is a heading
+
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+
+1. This is an ordered list
+2. with items
+
+>this is a quote
+
+```python
+print("Hello, World!")
+```
+"""
+        blocks = markdown_to_blocks(md)
+        block_types = [block_to_block_type(block) for block in blocks]
+        self.assertEqual(
+            block_types,
+            [
+                BlockType.HEADING,
+                BlockType.PARAGRAPH,
+                BlockType.PARAGRAPH,
+                BlockType.UNORDERED_LIST,
+                BlockType.ORDERED_LIST,
+                BlockType.QUOTE,
+                BlockType.CODE,
+            ],
+        )
