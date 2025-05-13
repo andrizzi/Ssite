@@ -124,3 +124,25 @@ def block_to_block_type(block):
         return BlockType.ORDERED_LIST
     else:
         return BlockType.PARAGRAPH
+    
+def markdown_to_html_node(markdown):
+    """
+    we're going to use all the functions above to convert a markdown string to an HTMLNode
+    """
+    blocks = markdown_to_blocks(markdown)
+    nodes = []
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        if block_type == BlockType.PARAGRAPH:
+            nodes.append(ParentNode(tag="p", children=[LeafNode(tag=None, value=block)]))
+        elif block_type == BlockType.HEADING:
+            nodes.append(ParentNode(tag="h1", children=[LeafNode(tag=None, value=block)]))
+        elif block_type == BlockType.CODE:
+            nodes.append(ParentNode(tag="pre", children=[LeafNode(tag=None, value=block)]))
+        elif block_type == BlockType.QUOTE:
+            nodes.append(ParentNode(tag="blockquote", children=[LeafNode(tag=None, value=block)]))
+        elif block_type == BlockType.UNORDERED_LIST:
+            nodes.append(ParentNode(tag="ul", children=[LeafNode(tag=None, value=block)]))
+        elif block_type == BlockType.ORDERED_LIST:
+            nodes.append(ParentNode(tag="ol", children=[LeafNode(tag=None, value=block)]))
+    return ParentNode(tag="div", children=nodes)
