@@ -100,8 +100,9 @@ def markdown_to_blocks(markdown):
     lines = markdown.split("\n\n")
     blocks = []
     for line in lines:
-        # Convert each line to TextNode objects
-        #nodes = text_to_textnodes(line)
+        if line == "":
+            continue
+        line = line.strip()
         blocks.append(line.strip("\n"))
     return blocks
 
@@ -202,17 +203,3 @@ def markdown_to_html_node(markdown):
             nodes.append(ParentNode(tag="p", children=text_to_children(block)))
     # Return the root node containing all the blocks
     return ParentNode(tag="div", children=nodes)
-"""        
-        if block_type == BlockType.PARAGRAPH:
-            nodes.append(ParentNode(tag="p", children=[text_to_children(block)]))
-        elif block_type == BlockType.HEADING:
-            nodes.append(ParentNode(tag="h1", children=[text_to_children(block)]))
-        elif block_type == BlockType.CODE:
-            nodes.append(ParentNode(tag="pre", children=[text_to_children(block)]))
-        elif block_type == BlockType.QUOTE:
-            nodes.append(ParentNode(tag="blockquote", children=[text_to_children(block)]))
-        elif block_type == BlockType.UNORDERED_LIST:
-            nodes.append(ParentNode(tag="ul", children=[text_to_children(block)]))
-        elif block_type == BlockType.ORDERED_LIST:
-            nodes.append(ParentNode(tag="ol", children=[text_to_children(block)]))
-    return ParentNode(tag="div", children=nodes)"""

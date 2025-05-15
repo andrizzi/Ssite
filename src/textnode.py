@@ -16,8 +16,6 @@ class TextNode:
         self.URL = URL
     
     def __eq__(self, other):
-        if not isinstance(other, TextNode):
-            return False
         return (self.text == other.text and
                 self.text_type == other.text_type and
                 self.URL == other.URL)
@@ -47,6 +45,7 @@ def text_node_to_html_node(text_node):
         return LeafNode(tag="a", value=text_node.text, props={"href": text_node.URL})
     elif text_node.text_type == TextType.IMAGE:
         return LeafNode(tag="img", value="", props={"src": text_node.URL, "alt": text_node.text})
+    raise ValueError(f"Unknown text type: {text_node.text_type}")
     
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):

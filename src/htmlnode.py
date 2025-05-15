@@ -4,14 +4,6 @@ class HTMLNode:
     """
 
     def __init__(self, tag: str = None, value: dict = None, children: list = None, props: dict = None):
-        """
-        Initialize the HTMLNode with a tag, value, and children.
-
-        :param tag: The HTML tag of the node.
-        :param value: A dictionary of attributes for the node.
-        :param children: A list of child nodes.
-        :param props: A dictionary of properties for the node.
-        """
         self.tag = tag
         self.value = value if value else {}
         self.children = children if children else []
@@ -23,9 +15,10 @@ class HTMLNode:
     def props_to_html(self):
         """
         Convert the properties of the node to an HTML string.
-
         :return: A string representation of the properties in HTML format.
         """
+        if self.props is None:
+            return ""
         result = " ".join([f'{key}="{value}"' for key, value in self.props.items()])
         if result and self.tag:
             return " " + result
@@ -44,13 +37,6 @@ class LeafNode(HTMLNode):
 
 #Use the super() function to call the constructor of the HTMLNode class.
     def __init__(self, tag: str, value: dict, props: dict = None):
-        """
-        Initialize the LeafNode with a tag and value.
-
-        :param tag: The HTML tag of the node.
-        :param value: A dictionary of attributes for the node.
-        :param props: A dictionary of properties for the node.
-        """
         if not value:
             raise ValueError("Value is required for LeafNode.")
         if not tag and tag is not None:
@@ -93,13 +79,6 @@ props is optional
 (It's the exact opposite of the LeafNode class)"""
 
     def __init__(self, tag: str, children: list, props: dict = None):
-        """
-        Initialize the ParentNode with a tag and children.
-
-        :param tag: The HTML tag of the node.
-        :param children: A list of child nodes.
-        :param props: A dictionary of properties for the node.
-        """
         if not tag:
             raise ValueError("Tag is required for ParentNode.")
         super().__init__(tag=tag, value={}, children=children, props=props)
@@ -112,3 +91,6 @@ props is optional
             raise ValueError("ParentNode must have children.")
         #return a string representing the HTML tag of the node and its children
         return f"<{self.tag}{self.props_to_html()}>" + "".join([child.to_html() for child in self.children]) + f"</{self.tag}>"
+    
+    def __repr__(self):
+        return f"ParentNode(tag={self.tag}, children={self.children}, props={self.props})"
