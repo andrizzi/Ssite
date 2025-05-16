@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from ExMarkLink import markdown_to_html_node, extract_title
 
 def generate_page(from_path, template_path, dest_path):
@@ -34,3 +35,18 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, "w") as f:
         f.write(template)    
     #close files
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    """
+    Crawl every entry in the content directory
+    For each markdown file found, generate a new .html file using the same template.html. 
+    The generated pages should be written to the public directory in the same directory structure.
+    """
+    for filename in os.listdir(dir_path_content):
+        from_path = os.path.join(dir_path_content, filename)
+        dest_path = os.path.join(dest_dir_path, filename)
+        if os.path.isfile(from_path):
+            dest_path = Path(dest_path).with_suffix(".html")
+            generate_page(from_path, template_path, dest_path)
+        else:
+            generate_pages_recursive(from_path, template_path, dest_path)

@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from Generate import generate_page
+from Generate import generate_pages_recursive
 from copystatic import copy_files_recursive
 
 
@@ -19,10 +19,10 @@ def main():
     copy_files_recursive(dir_path_static, dir_path_public)
 
     # Generate a page from content/index.md using template.html and write it to public/index.html.
-    generate_page(
-        os.path.join(dir_path_content, "index.md"),
+    generate_pages_recursive(
+        dir_path_content,
         template_path,
-        os.path.join(dir_path_public, "index.html"),
+        dir_path_public,
     )
 
 
