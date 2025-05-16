@@ -203,3 +203,16 @@ def markdown_to_html_node(markdown):
             nodes.append(ParentNode(tag="p", children=text_to_children(block)))
     # Return the root node containing all the blocks
     return ParentNode(tag="div", children=nodes)
+
+
+def extract_title(markdown):
+    """
+    Extract the title from the markdown text.
+    The title is assumed to be the first heading (h1) in the markdown.
+    """
+    blocks = markdown_to_blocks(markdown)
+    for block in blocks:
+        line = block.strip("\n").split("\n")[0]
+        if line.startswith("#"):
+            return line.strip("#").strip()
+    return None

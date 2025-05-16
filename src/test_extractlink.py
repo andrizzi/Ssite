@@ -94,7 +94,7 @@ This is the same paragraph on a new line
     def test_markdown_to_blocks_empty(self):
         md = ""
         blocks = markdown_to_blocks(md)
-        self.assertEqual(blocks, [""])
+        self.assertEqual(blocks, [])
 
     def test_markdown_to_blocks_no_newline(self):
         md = "This is a single line of text"
@@ -173,3 +173,12 @@ class TestMarkdownToHTML(unittest.TestCase):
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff</code></pre></div>",
         )
+
+    def test_heading(self):
+        md = """
+### This is a heading
+this is not
+
+    """
+        title = extract_title(md)
+        self.assertEqual(title, "This is a heading")
