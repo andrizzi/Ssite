@@ -33,6 +33,13 @@ class TestTextNodeConversion(unittest.TestCase):
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
 
+    def test_img(self):
+        node = TextNode("This is an image", TextType.IMAGE, "https://example.com/image.png")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.props["src"], "https://example.com/image.png")
+        self.assertEqual(html_node.props["alt"], "This is an image")
+
 class TestTextNodeSplit(unittest.TestCase):
 
     def test_split_nodes_delimiter(self):

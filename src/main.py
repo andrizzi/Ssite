@@ -1,13 +1,14 @@
 import os
 import shutil
-from Generate import generate_pages
 
+from Generate import generate_page
 from copystatic import copy_files_recursive
 
 
 dir_path_static = "./static"
 dir_path_public = "./public"
-
+dir_path_content = "./content"
+template_path = "./template.html"
 
 def main():
     print("Deleting public directory...")
@@ -18,10 +19,10 @@ def main():
     copy_files_recursive(dir_path_static, dir_path_public)
 
     # Generate a page from content/index.md using template.html and write it to public/index.html.
-    generate_pages(
-        from_path="./content/index.md",
-        template_path="./template.html",
-        dest_path="./public/index.html",
+    generate_page(
+        os.path.join(dir_path_content, "index.md"),
+        template_path,
+        os.path.join(dir_path_public, "index.html"),
     )
 
 

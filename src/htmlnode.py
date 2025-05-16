@@ -29,37 +29,14 @@ class HTMLNode:
         return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
     
 class LeafNode(HTMLNode):
-    """
-    a child class of HTMLNode called LeafNode. Its constructor should differ slightly from the HTMLNode class because:
-    It should not allow for any children
-    The value data member should be required (and tag even though the tag's value may be None)
-    """
-
-#Use the super() function to call the constructor of the HTMLNode class.
     def __init__(self, tag: str, value: dict, props: dict = None):
-        if not value:
-            raise ValueError("Value is required for LeafNode.")
-        if not tag and tag is not None:
-            raise ValueError("Tag is required for LeafNode.")
         super().__init__(tag=tag, value=value, children=[], props=props)
         # Ensure that LeafNode does not have children
 
-    """
-    Add a .to_html() method that renders a leaf node as an HTML string (by returning a string).
-    If the leaf node has no value, it should raise a ValueError. All leaf nodes must have a value.
-    If there is no tag (e.g. it's None), the value should be returned as raw text.
-    Otherwise, it should render an HTML tag. For example, these leaf nodes:
-    """
-
     def to_html(self):
-        """
-        Convert the LeafNode to an HTML string.
-
-        :return: A string representation of the LeafNode in HTML format.
-        """
-        if not self.value:
+        if self.value is None:
             raise ValueError("LeafNode must have a value.")
-        if not self.tag:
+        if self.tag is None:
             return str(self.value)
         else:
             props_str = self.props_to_html()

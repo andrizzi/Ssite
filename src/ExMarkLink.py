@@ -159,7 +159,7 @@ def markdown_to_html_node(markdown):
             nodes.append(ParentNode(tag="p", children=text_to_children(block)))
         elif block_type == BlockType.HEADING:
             # Determine heading level by counting #
-            level = 1
+            level = 0
             for char in block:
                 if char == '#':
                     level += 1
@@ -215,4 +215,4 @@ def extract_title(markdown):
         line = block.strip("\n").split("\n")[0]
         if line.startswith("#"):
             return line.strip("#").strip()
-    return None
+    return ValueError("no title found")
