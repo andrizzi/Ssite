@@ -38,7 +38,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
         f.write(template)    
     #close files
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath="/"):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     """
     Crawl every entry in the content directory
     For each markdown file found, generate a new .html file using the same template.html. 
