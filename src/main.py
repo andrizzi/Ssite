@@ -1,6 +1,6 @@
 import os
 import shutil
-from sys import argv
+import sys
 
 from Generate import generate_pages_recursive
 from copystatic import copy_files_recursive
@@ -14,8 +14,8 @@ default_basepath = "/"
     
 def main():
     basepath = default_basepath
-    if len(argv) > 1:
-        basepath = argv[1]
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
     print("Deleting public directory...")
     if os.path.exists(dir_path_public):
         shutil.rmtree(dir_path_public)
